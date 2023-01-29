@@ -1,11 +1,11 @@
-// Category model
+// category model
 
-// Dependencies 
+// dependencies 
 const { Model, DataTypes } = require('sequelize');
 
 const sequelize = require('../config/connection.js');
 
-// Class category
+// class category
 class Category extends Model {}
 
 Category.init(
@@ -36,10 +36,10 @@ module.exports = Category;
 /* Requirements
 Category
 id
-  - Integer
-  - Doesn't allow null values
-  - Set as primary key
-  - Uses auto increment
-category_name
-  - String
-  - Doesn't allow null values*/
+   Integer
+   Doesn't allow null values
+   Set as primary key
+  Uses auto increment
+  cat egory_name
+   String
+  Doesn't allow null values*/

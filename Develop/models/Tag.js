@@ -1,14 +1,14 @@
-// Tag Model
+// tag model
 // Dependencies
 const { Model, DataTypes } = require('sequelize');
 
 // Connect
 const sequelize = require('../config/connection.js');
 
-// Tag Class
+// tag Class
 class Tag extends Model {}
 
-// Tag Set UP
+// tag Set UP
 Tag.init(
   {
     // define columns

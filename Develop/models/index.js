@@ -1,78 +1,28 @@
-// import important parts of sequelize library
-const { Model, DataTypes } = require('sequelize');
-// import our database connection from config.js
-const sequelize = require('../config/connection');
+// Sequelize models
+// Import models
+const Product = require('./Product');
+const Category = require('./Category');
+const Tag = require('./Tag');
+const ProductTag = require('./ProductTag');
 
-// Initialize Product model (table) by extending off Sequelize's Model class
-class Product extends Model {}
+// Products belongsTo Category
+Product.belongsTo(Category, {foreignKey: 'category_id' });
+// Categories have many Products
+Category.hasMany(Product, {foreignKey: 'category_id' });
+// Products belongToMany Tags (through ProductTag)
+Product.belongsToMany(Tag, { through: ProductTag, foreignKey: 'product_id' });
+// Tags belongToMany Products (through ProductTag)
+Tag.belongsToMany(Product, { through: ProductTag, foreignKey: 'tag_id' });
 
-// set up fields and rules for Product model
-Product.init(
-  {
-    // define columns
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    product_name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    price: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-      validate: {
-        isDecimal: true
-      }
-    },
-    stock: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 10,
-      validate: { 
-        isNumeric: true 
-      }
-    },
-    category_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'Category',
-        key: 'id'
-      }
-    }
-  },
-  {
-    sequelize,
-    timestamps: false,
-    freezeTableName: true,
-    underscored: true,
-    modelName: 'Product'
-  }
-);
+module.exports = {
+  Product,
+  Category,
+  Tag,
+  ProductTag,
+};
 
-module.exports = Product;
-
-/* Requirements:
-Product
-  id
-  - Integer
-  - Doesn't allow null values
-  - Set as primary key
-  - Uses auto increment
-  product_name
-  - String
-  - Doesn't allow null values
-  price
-  - Decimal
-  - Doesn't allow null values
-  - Validates that the value is a decimal
-  stock
-  - Integer
-  - Doesn't allow null values
-  - Set a default value of 10
-  - Validates that the value is numeric
-  category_id
-  - Integer
-  - References the category model's id */
+/* Checked Requirements:
+- Product belongs to Category. A category can have multiple products; however, a product can only belong to one category.
+- Category has many Product models.
+- Product belongs to many Tag models. Using the ProductTag through model, allow products to have multiple tags and tags to have many products.
+- Tag belongs to many Product models.*/
